@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Golden Express - International Courier & Cargo</title>
+  <style>
+    /* Global Reset & Base */
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f9f9f9; color:#333; }
+    header, footer { background:#fff8e1; padding:1em; text-align:center; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+    .logo { font-size:2em; font-weight:bold; color:goldenrod; }
+    .slogan { margin-top:0.5em; font-style:italic; color:#777; }
+    nav ul { list-style:none; padding:0; display:flex; justify-content:center; flex-wrap:wrap; }
+    nav li { margin:0 1em; }
+    nav a { text-decoration:none; color:#333; font-weight:bold; }
+    section { padding:2em; max-width:1000px; margin:auto; }
+    h1,h2,h3 { color:goldenrod; margin-bottom:0.5em; }
+    p { line-height:1.6; margin-bottom:1em; }
+    /* Aleem Character */
+    #aleem-character { position:fixed; top:0; left:0; width:150px; height:150px; pointer-events:none; transition:transform .1s ease; z-index:1000; }
+    /* Map Section */
+    #map-section video { width:100%; max-height:500px; object-fit:cover; box-shadow:0 4px 20px rgba(0,0,0,0.2); }
+    /* Popular Destinations */
+    #destinations #country-buttons { display:flex; flex-wrap:wrap; justify-content:center; gap:1em; }
+    #country-buttons button { display:flex; align-items:center; padding:.5em 1em; border:none; background:#fef4dc; border-radius:8px; cursor:pointer; font-weight:bold; transition:background .3s; box-shadow:0 1px 3px rgba(0,0,0,0.1); }
+    #country-buttons button:hover { background:#ffe08a; }
+    #country-buttons img { margin-right:.5em; width:24px; }
+    #price-box { margin-top:1em; padding:1em; background:#fff3cd; border:1px solid #ffeeba; border-radius:8px; text-align:center; font-weight:bold; }
+    /* About Us */
+    #about-us { background:#fff; border-radius:10px; padding:2em; box-shadow:0 2px 10px rgba(0,0,0,0.05); margin-bottom:2em; }
+    .about-content { display:grid; grid-template-columns:1fr 1fr; gap:2em; }
+    .about-values, .about-vision { background:#fffbea; border-radius:8px; padding:1.5em; }
+    @media (max-width:768px) { .about-content { grid-template-columns:1fr; } }
+    /* Core Services Cards */
+    .services-container { display:flex; justify-content:center; flex-wrap:wrap; gap:2em; margin-top:2em; }
+    .service-card { width:250px; height:300px; perspective:1000px; }
+    .card-inner { position:relative; width:100%; height:100%; transition:transform .8s; transform-style:preserve-3d; }
+    .service-card:hover .card-inner { transform:rotateY(180deg); }
+    .card-front, .card-back { position:absolute; width:100%; height:100%; backface-visibility:hidden; border-radius:10px; padding:1em; box-shadow:0 4px 8px rgba(0,0,0,0.1); }
+    .card-front { background:#fff3cd; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .card-back { background:#ffeeba; transform:rotateY(180deg); display:flex; align-items:center; justify-content:center; text-align:center; }
+    .card-icon { font-size:3em; margin-bottom:.5em; }
+    /* Prohibited Items */
+    #prohibited { background:#fff; padding:2em; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+    #prohibited ul { list-style:decimal inside; }
+    #prohibited li { margin-bottom:.5em; }
+    /* Enquiry & Tracking */
+    form, .callback-form, .feedback-form { background:#fff; padding:2em; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.05); margin-bottom:2em; }
+    form, .callback-form, .feedback-form { max-width:600px; margin:auto; display:grid; gap:1em; }
+    input, select, textarea { padding:.75em; font-size:1em; border:1px solid #ccc; border-radius:5px; }
+    button { padding:.75em; font-size:1em; background:goldenrod; color:#fff; border:none; border-radius:5px; cursor:pointer; transition:background .3s; }
+    button:hover { background:#d4af37; }
+    #form-response { text-align:center; color:green; margin-top:1em; }
+    /* Footer & QR */
+    .qr-container { margin-top:1em; }
+    .qr-container img { width:120px; height:auto; }
+    footer p, footer a { margin:.5em 0; color:#555; font-size:.9em; }
+    /* Responsive */
+    @media (max-width:768px) { nav ul { flex-direction:column; align-items:center; } .services-container, #destinations #country-buttons { flex-direction:column; } form { width:90%; } #aleem-character { width:100px; height:100px; } }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded',()=>{
+      const aleem=document.createElement('div');aleem.id='aleem-character';aleem.innerHTML='<img src="aleem-character.png" alt="Aleem" style="width:100%;height:100%;">';document.body.appendChild(aleem);
+      document.addEventListener('mousemove',e=>{aleem.style.transform=translate(${e.clientX-75}px,${e.clientY-75}px)});
+    });
+    function showPrice(c,p){document.getElementById('price-box').textContent=Starting from ${p} to ${c};}
+    function submitForm(e){e.preventDefault();document.getElementById('form-response').innerText='We will get back to you soon. Thank you for choosing Golden Express!';e.target.reset();}
+    function submitCallback(e){e.preventDefault();alert('Callback requested! Our team will reach out soon.');e.target.reset();}
+    function submitFeedback(e){e.preventDefault();alert('Thank you for your feedback!');e.target.reset();}
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">Golden Express</div>
+    <nav><ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about-us">About Us</a></li>
+      <li><a href="#destinations">Destinations</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#prohibited">Prohibited Items</a></li>
+      <li><a href="#enquiry-tracking">Enquiry & Tracking</a></li>
+      <li><a href="#contact-us">Contact Us</a></li>
+    </ul></nav>
+    <div class="slogan">Global Reach, Local Touch</div>
+  </header>
+
+  <!-- Home -->
+  <section id="home">
+    <h1>Welcome to Golden Express</h1>
+    <p>No destination is too far. Our global reach is complemented by local expertise, providing personalized touch wherever your package is headed.</p>
+  </section>
+  <section id="map-section">
+    <video src="videos/worldmap-4k.mp4" autoplay loop muted></video>
+  </section>
+
+  <!-- Destinations -->
+  <section id="destinations">
+    <h2>Popular Destinations</h2>
+    <p>Click a country to view our starting rates:</p>
+    <div id="country-buttons">
+      <button onclick="showPrice('USA','$35 / kg')"><img src="flags/usa.png" alt="USA"> USA</button>
+      <button onclick="showPrice('UK','$30 / kg')"><img src="flags/uk.png" alt="UK"> UK</button>
+      <button onclick="showPrice('Canada','$33 / kg')"><img src="flags/canada.png" alt="Canada"> Canada</button>
+      <button onclick="showPrice('Australia','$40 / kg')"><img src="flags/australia.png" alt="Australia"> Australia</button>
+    </div>
+    <div id="price-box"></div>
+  </section>
+
+  <!-- About Us -->
+  <section id="about-us">
+    <h2>Golden Express Couriers</h2>
+    <div class="about-content">
+      <div>
+        <p>At Golden Express Couriers, we’re your dedicated logistics partner, committed to reliable and efficient shipping worldwide. With years in the global shipping industry, our network spans continents, ensuring your parcels reach on time and in perfect condition.</p>
+        <p>Our mission: make global shipping easier, faster, and more accessible—for businesses sending documents or families sending gifts.</p>
+      </div>
+      <div>
+        <div class="about-values">
+          <h3>Why Choose Us?</h3>
+          <p><strong>Global Reach & Local Expertise:</strong> Smooth customs navigation worldwide.</p>
+          <p><strong>Reliable & Fast Delivery:</strong> Express options with speed and safety.</p>
+          <p><strong>Competitive Pricing:</strong> Cost-effective solutions for every budget.</p>
+          <p><strong>Custom Solutions:</strong> Tailored services for your unique needs.</p>
+          <p><strong>State-of-the-Art Tracking:</strong> Real-time shipment updates.</p>
+          <p><strong>Customer-Centric Service:</strong> From inquiry to delivery, we’ve got you covered.</p>
+        </div>
+        <div class="about-vision">
+          <h3>Our Values & Vision</h3>
+          <p><strong>Integrity:</strong> Honest, transparent communication.</p>
+          <p><strong>Innovation:</strong> Continuous improvement in services.</p>
+          <p><strong>Excellence:</strong> Passion for effortless global shipping.</p>
+          <p><strong>Vision:</strong> To be the most trusted, innovative courier service worldwide.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Services -->
+  <section id="services">
+    <h2>Core Services</h2>
+    <div class="services-container">
+      <!-- Courier -->
+      <div class="service-card"><div class="card-inner">
+        <div class="card-front"><div class="card-icon">📦</div><h3>Courier Services</h3></div>
+        <div class="card-back"><p>Unrivaled efficiency, security, and reliability—lightning speed deliveries.</p><button>Book Now</button></div>
+      </div></div>
+      <!-- International -->
+      <div class="service-card"><div class="card-inner">
+        <div class="card-front"><div class="card-icon">🌐</div><h3>International Courier</h3></div>
+        <div class="card-back"><p>Bridge borders effortlessly—rapid, secure, seamless global deliveries.</p><button>Book Now</button></div>
+      </div></div>
+      <!-- Excess Baggage -->
+      <div class="service-card"><div class="card-inner">
+        <div class="card-front"><div class="card-icon">🛄</div><h3>Excess Baggage</h3></div>
+        <div class="card-back"><p>Travel light—extra luggage delivered on time, safely, securely.</p><button>Book Now</button></div>
+      </div></div>
+      <!-- Air Cargo -->
+      <div class="service-card"><div class="card-inner">
+        <div class="card-front"><div class="card-icon">✈</div><h3>Air Cargo Agents</h3></div>
+        <div class="card-back"><p>Efficient, secure air cargo solutions—your goods soar with precision.</p><button>Book Now</button></div>
+      </div></div>
+      <!-- Docs & Parcels -->
+      <div class="service-card"><div class="card-inner">
+        <div class="card-front"><div class="card-icon">📝</div><h3>Documents & Parcels</h3></div>
+        <div class="card-back"><p>Speed meets precision—time-sensitive deliveries handled with urgency.</p><button>Book Now</button></div>
+      </div></div>
+      <!-- Food Courier -->
+      <div class="service-card"><div class="card-inner">
+        <div class="card-front"><div class="card-icon">🍱</div><h3>Food Courier</h3></div>
+        <div class="card-back"><p>Culinary delights delivered—safe, timely handling of food items.</p><button>Book Now</button></div>
+      </div></div>
+      <!-- Medicine -->
+      <div class="service-card"><div class="card-inner">
+        <div class="card-front"><div class="card-icon">💊</div><h3>Medicine Delivery</h3></div>
+        <div class="card-back"><p>Life-saving meds delivered swiftly—never miss a dose.</p><button>Book Now</button></div>
+      </div></div>
+      <!-- International Moving -->
+      <div class="service-card"><div class="card-inner">
+        <div class="card-front"><div class="card-icon">🚚</div><h3>International Moving</h3></div>
+        <div class="card-back"><p>Seamless relocations—personalized, precise, effortless moves.</p><button>Book Now</button></div>
+      </div></div>
+      <!-- Express -->
+      <div class="service-card"><div class="card-inner">
+        <div class="card-front"><div class="card-icon">⚡</div><h3>Express Delivery</h3></div>
+        <div class="card-back"><p>Urgent shipments in safe hands—speed without compromise.</p><button>Book Now</button></div>
+      </div></div>
+      <!-- Custom Solutions -->
+      <div class="service-card"><div class="card-inner">
+        <div class="card-front"><div class="card-icon">🔧</div><h3>Custom Solutions</h3></div>
+        <div class="card-back"><p>Bespoke shipping solutions—tailored to your unique needs.</p><button>Book Now</button></div>
+      </div></div>
+      <!-- Global+Local -->
+      <div class="service-card"><div class="card-inner">
+        <div class="card-front"><div class="card-icon">🌍</div><h3>Global Coverage</h3></div>
+        <div class="card-back"><p>Vast network, local expertise—smooth regulation navigation.</p><button>Book Now</button></div>
+      </div></div>
+      <!-- Reliability -->
+      <div class="service-card"><div class="card-inner">
+        <div class="card-front"><div class="card-icon">🔒</div><h3>Reliability & Security</h3></div>
+        <div class="card-back"><p>Highest care standards—safe, on-time deliveries for peace of mind.</p><button>Book Now</button></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- Prohibited Items -->
+  <section id="prohibited">
+    <h2>Prohibited Items Policy</h2>
+    <p>Ensuring safety, security, and compliance is our top priority. The following items are prohibited:</p>
+    <ul>
+      <li><strong>Hazardous Materials:</strong> Explosives, Chemicals, Aerosols</li>
+      <li><strong>Restricted/Illegal Goods:</strong> Illegal drugs, Counterfeit, Stolen items</li>
+      <li><strong>Perishable Goods:</strong> Fresh produce, foods likely to spoil</li>
+      <li><strong>Fragile/High-Value:</strong> Fine art, Glassware, Jewelry</li>
+      <li><strong>Live Animals</strong></li>
+      <li><strong>Others:</strong> Precious metals, Currency, Dhoop sticks, Batteries, Power Banks, Narcotics, etc.</li>
+    </ul>
+    <p>Contact us for Clarifications if unsure about any item.</p>
+  </section>
+
+  <!-- Enquiry & Tracking -->
+  <section id="enquiry-tracking">
+    <h2>Stay Informed, Every Step of the Way</h2>
+    <h3>Track Your Shipment</h3>
+    <p>Enter your tracking number below for real-time updates:</p>
+    <form onsubmit="submitForm(event)">
+      <input type="text" name="tracking" placeholder="Tracking Number" required>
+      <button type="submit">Track Now</button>
+    </form>
+    <div id="form-response"></div>
+    <h3>Quick Enquiry</h3>
+    <p><a href="#contact-us">Contact Us Now</a> for booking or shipping queries—we’re available 24/7.</p>
+    <h3>Delivery Updates & Notifications</h3>
+    <p>Sign up for email/SMS notifications to stay ahead.</p>
+    <form class="callback-form" onsubmit="submitCallback(event)">
+      <input type="email" placeholder="Your Email or Phone" required>
+      <button type="submit">Sign Up</button>
+    </form>
+    <h3>Need Personalized Assistance?</h3>
+    <p><a href="#contact-us">Chat with Us Now</a> for real-time support.</p>
+  </section>
+
+  <!-- Contact Us -->
+  <section id="contact-us">
+    <h2>We’re Here to Assist You!</h2>
+    <p>Customer support, callback requests, office visits, social media, and feedback—all in one place.</p>
+    <div class="contact-support">
+      <h3>Customer Support</h3>
+      <ul>
+        <li><strong>Phone:</strong> +91-9999999999</li>
+        <li><strong>Email:</strong> support@goldenexpress.com</li>
+        <li><strong>Live Chat:</strong> <a href="#">Chat with Us Now</a></li>
+      </ul>
+    </div>
+    <div class="callback-form">
+      <h3>Request a Callback</h3>
+      <form onsubmit="submitCallback(event)">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="text" name="phone" placeholder="Your Phone" required>
+        <input type="text" name="time" placeholder="Preferred Time" required>
+        <button type="submit">Request Callback</button>
+      </form>
+    </div>
+    <div class="visit-us">
+      <h3>Visit Us</h3>
+      <p><strong>Office Location:</strong> 123 Express Lane, Hyderabad</p>
+      <p><strong>Business Hours:</strong> Mon–Fri, 9am–6pm</p>
+    </div>
+    <div class="social-media">
+      <h3>Connect on Social Media</h3>
+      <ul>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">LinkedIn</a></li>
+      </ul>
+    </div>
+    <div class="feedback-form">
+      <h3>Your Opinion Matters</h3>
+      <form onsubmit="submitFeedback(event)">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" rows="5" placeholder="Your Feedback" required></textarea>
+        <button type="submit">Submit Feedback</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Mohammed Sameer & Mohammed Aleem</p>
+    <div class="qr-container">
+      <p>Scan QR for Social Links, Ratings & Referral:</p>
+      <img src="social-qr.png" alt="QR Code">
+    </div>
+  </footer>
+</body>
+</html>
